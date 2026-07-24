@@ -17,9 +17,9 @@ public class UserAdd extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String username = req.getParameter("username");
-        String email = req.getParameter("useremail");
-        String password = req.getParameter("password");
+        String username = req.getParameter("userName");
+        String email = req.getParameter("userEmail");
+        String password = req.getParameter("userPassword");
 
         User user = new User(username, email, password);
         UserDao.create(user);

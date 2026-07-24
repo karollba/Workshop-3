@@ -19,12 +19,12 @@ import static pl.coderslab.DbUtil.*;
 
 public class UserDao {
 
-    private static String GET_ALL_USERS = "SELECT * FROM uzytkownicy";
+    private static final String GET_ALL_USERS = "SELECT * FROM uzytkownicy";
     private static final String REMOVE_USER_BY_ID = "DELETE FROM uzytkownicy WHERE id = ?;";
     private static final String UPDATE_USER = "UPDATE uzytkownicy SET username = ?, email = ? WHERE id = ?;";
     private static final String GET_USER_BY_ID = "SELECT * FROM uzytkownicy WHERE id = ?;";
-    private static final String ADD_USER = "INSERT INTO users (email, username, password) VALUES (?, ?, ?);";
-
+    private static final String ADD_USER = "INSERT INTO uzytkownicy (email, username, password) VALUES (?, ?, ?);";
+    private static final String UPDATE_PASSWORD = "UPDATE uzytkownicy SET password = ? WHERE id = ?";
 
     public static List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
@@ -89,6 +89,17 @@ public class UserDao {
             statement.executeUpdate();
         }
     }
+
+    public static void updatePassword(int id, String password) throws SQLException {
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement statement = conn.prepareStatement(UPDATE_PASSWORD)) {
+
+            statement.setString(1, DbUtil.hashPassword(password));
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        }
+    }
+
 
     public static User create(User user) {
         try (Connection conn = DbUtil.getConnection()) {

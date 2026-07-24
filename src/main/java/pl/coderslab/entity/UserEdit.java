@@ -27,10 +27,15 @@ public class UserEdit extends HttpServlet {
         int id = Integer.parseInt(req.getParameter("id"));
         String username = req.getParameter("userName");
         String email = req.getParameter("userEmail");
+        String password = req.getParameter("userPassword");
 
         try {
-            UserDao.updateUser(id, username, email);
-        } catch (SQLException e) {
+                UserDao.updateUser(id, username, email);
+
+                if (password != null && !password.isEmpty()) {
+                    UserDao.updatePassword(id, password);
+                }
+          } catch (SQLException e) {
             e.printStackTrace();
         }
 
