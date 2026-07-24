@@ -20,11 +20,11 @@ import static pl.coderslab.DbUtil.*;
 public class UserDao {
 
     private static String GET_ALL_USERS = "SELECT * FROM uzytkownicy";
-    private static final String REMOVE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
+    private static final String REMOVE_USER_BY_ID = "DELETE FROM uzytkownicy WHERE id = ?;";
     private static final String UPDATE_USER = "UPDATE uzytkownicy SET username = ?, email = ? WHERE id = ?;";
     private static final String GET_USER_BY_ID = "SELECT * FROM uzytkownicy WHERE id = ?;";
-    private static final String EDIT_USER_EMAIL = "UPDATE uzytkownicy SET email = ? WHERE id = ?;";
-    private static final String EDIT_USER_PASSWORD = "UPDATE uzytkownicy SET password = ? WHERE id = ?;";
+    private static final String ADD_USER = "INSERT INTO users (email, username, password) VALUES (?, ?, ?);";
+
 
     public static List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
@@ -78,15 +78,8 @@ public class UserDao {
         return null;
     }
 
-    public static void editUser() throws SQLException {
-
-        // nazwa
-        // email
-        //haslo
-    }
 
     public static void updateUser(int id, String username, String email) throws SQLException {
-        // musisz przekazac id tutaj z kliknietego wczesniej uzytkownika
         try (Connection conn = DbUtil.getConnection();
         PreparedStatement statement = conn.prepareStatement(UPDATE_USER)) {
 
@@ -94,6 +87,26 @@ public class UserDao {
             statement.setString(2, email);
             statement.setInt(3, id);
             statement.executeUpdate();
+        }
+    }
+
+    public static User create(User user) {
+        try (Connection conn = DbUtil.getConnection()) {
+            PreparedStatement statement =
+                    conn.prepareStatement(ADD_USER, Statement.RETURN_GENERATED_KEYS);
+            statement.setString(1, user.getEmail());
+            statement.setString(2, user.getUserName());
+            statement.setString(3, hashPassword(user.getPassword()));
+            statement.executeUpdate();
+
+            ResultSet resultSet = statement.getGeneratedKeys();
+            if (resultSet.next()) {
+                user.setId(resultSet.getInt(1));
+            }
+            return user;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return null;
         }
     }
 }
