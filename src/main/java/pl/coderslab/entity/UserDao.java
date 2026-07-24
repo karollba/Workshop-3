@@ -21,7 +21,8 @@ public class UserDao {
 
     private static String GET_ALL_USERS = "SELECT * FROM uzytkownicy";
     private static final String REMOVE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
-    private static final String EDIT_USERNAME = "UPDATE uzytkownicy SET username = ? WHERE id = ?;";
+    private static final String UPDATE_USER = "UPDATE uzytkownicy SET username = ?, email = ? WHERE id = ?;";
+    private static final String GET_USER_BY_ID = "SELECT * FROM uzytkownicy WHERE id = ?;";
     private static final String EDIT_USER_EMAIL = "UPDATE uzytkownicy SET email = ? WHERE id = ?;";
     private static final String EDIT_USER_PASSWORD = "UPDATE uzytkownicy SET password = ? WHERE id = ?;";
 
@@ -56,6 +57,27 @@ public class UserDao {
 
     }
 
+    public static User getUserById(int id) throws SQLException {
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(GET_USER_BY_ID)) {
+
+            preparedStatement.setInt(1, id);
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    User user = new User(
+                            resultSet.getString("username"),
+                            resultSet.getString("email"),
+                            resultSet.getString("password")
+                    );
+                    user.setId(resultSet.getInt("id"));
+                    return user;
+
+                }
+            }
+        }
+        return null;
+    }
+
     public static void editUser() throws SQLException {
 
         // nazwa
@@ -63,13 +85,14 @@ public class UserDao {
         //haslo
     }
 
-    public static void updateUsername(int id, String newUsername) throws SQLException {
+    public static void updateUser(int id, String username, String email) throws SQLException {
         // musisz przekazac id tutaj z kliknietego wczesniej uzytkownika
         try (Connection conn = DbUtil.getConnection();
-        PreparedStatement statement = conn.prepareStatement(EDIT_USERNAME)) {
+        PreparedStatement statement = conn.prepareStatement(UPDATE_USER)) {
 
-            statement.setString(1, newUsername);
-            statement.setInt(2, id);
+            statement.setString(1, username);
+            statement.setString(2, email);
+            statement.setInt(3, id);
             statement.executeUpdate();
         }
     }
