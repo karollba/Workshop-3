@@ -3,11 +3,10 @@
     <Resource name="jdbc/users"
               auth="Container"
               type="javax.sql.DataSource"
-              username="${DB_USER}"
-              password="${DB_PASS}"
+
               driverClassName="com.mysql.cj.jdbc.Driver"
               connectionProperties="useUnicode=yes;characterEncoding=utf8;serverTimezone=UTC"
-              url="jdbc:mysql://localhost:3306/workshop3"
+              url="jdbc:mysql://localhost:3306/users"
               maxTotal="100"
               maxIdle="30"
               maxWaitMillis="10000" />
