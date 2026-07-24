@@ -20,6 +20,10 @@ import static pl.coderslab.DbUtil.*;
 public class UserDao {
 
     private static String GET_ALL_USERS = "SELECT * FROM uzytkownicy";
+    private static final String REMOVE_USER_BY_ID = "DELETE FROM users WHERE id = ?;";
+    private static final String EDIT_USERNAME = "UPDATE uzytkownicy SET username = ? WHERE id = ?;";
+    private static final String EDIT_USER_EMAIL = "UPDATE uzytkownicy SET email = ? WHERE id = ?;";
+    private static final String EDIT_USER_PASSWORD = "UPDATE uzytkownicy SET password = ? WHERE id = ?;";
 
     public static List<User> getAllUsers() throws SQLException {
         List<User> users = new ArrayList<>();
@@ -32,7 +36,7 @@ public class UserDao {
                 User user = new User(
                         resultSet.getString("username"),
                         resultSet.getString("email"),
-                        resultSet.getString("pasword")
+                        resultSet.getString("password")
                 );
                 user.setId(resultSet.getInt("id"));
                 users.add(user);
@@ -40,5 +44,33 @@ public class UserDao {
 
         }
         return users;
+
+    }
+
+    public static void removeUserById(int id) throws SQLException {
+        try (Connection conn = DbUtil.getConnection();
+             PreparedStatement preparedStatement = conn.prepareStatement(REMOVE_USER_BY_ID)) {
+            preparedStatement.setInt(1,id);
+            preparedStatement.executeUpdate();
+        }
+
+    }
+
+    public static void editUser() throws SQLException {
+
+        // nazwa
+        // email
+        //haslo
+    }
+
+    public static void updateUsername(int id, String newUsername) throws SQLException {
+        // musisz przekazac id tutaj z kliknietego wczesniej uzytkownika
+        try (Connection conn = DbUtil.getConnection();
+        PreparedStatement statement = conn.prepareStatement(EDIT_USERNAME)) {
+
+            statement.setString(1, newUsername);
+            statement.setInt(2, id);
+            statement.executeUpdate();
+        }
     }
 }

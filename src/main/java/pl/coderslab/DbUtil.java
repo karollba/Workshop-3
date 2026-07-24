@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.sql.*;
 
 public class DbUtil {
+
     private static DataSource dataSource;
 
     public static Connection getConnection() throws SQLException {
@@ -29,5 +30,6 @@ public class DbUtil {
         }
         return dataSource;
     }
+
 
 }
