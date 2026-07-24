@@ -5,28 +5,35 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 
 import java.io.IOException;
+import java.sql.SQLException;
 
 @WebServlet("/user/edit")
 public class UserEdit extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
             String id = request.getParameter("id");
-            UserDao userDao = new UserDao();
-            User read = userDao.read(Integer.parseInt(id));
-            request.setAttribute("user", read);
+            try {
+                User user = UserDao.getUserById(Integer.parseInt(id));
+                request.setAttribute("user", user);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
             getServletContext().getRequestDispatcher("/users/edit.jsp")
                     .forward(request, response);
         }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        User user = new User();
-        user.setId(Integer.parseInt(req.getParameter("id")));
-        user.setName(req.getParameter("userName"));
-        user.setEmail(req.getParameter("userEmail"));
-        user.setPassword(req.getParameter("userPassword"));
-        UserDao userDao = new UserDao();
-        userDao.update(user);
+        int id = Integer.parseInt(req.getParameter("id"));
+        String username = req.getParameter("userName");
+        String email = req.getParameter("userEmail");
+
+        try {
+            UserDao.updateUser(id, username, email);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         resp.sendRedirect(req.getContextPath() + "/user/list");
 
     }
