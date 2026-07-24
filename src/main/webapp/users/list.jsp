@@ -2,7 +2,7 @@
 
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 
-<%@ include file="/header.jsp"%>
+<%@ include file="/users/header.jsp"%>
 
       <!-- Begin Page Content -->
       <div class="container-fluid">
@@ -52,4 +52,4 @@
         </div>
       </div>
 
-<%@include file="/footer.jsp"%>
+<%@include file="/users/footer.jsp"%>

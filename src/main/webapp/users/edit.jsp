@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/header.jsp" %>
+<%@ include file="/users/header.jsp" %>
 <div class="container-fluid">
 
   <!-- Page Heading -->
@@ -28,12 +28,12 @@
           <input name="userPassword" type="password" class="form-control" id="userPassword" placeholder="Hasło użytkownika">
         </div>
 
-        <button type="submit" class="btn btn-primary">Edytuj</button>
+        <button type="submit" class="btn btn-primary">Zapisz</button>
       </form>
-
     </div>
+    <a href="<c:url value='/user/list'/>" class="btn btn-primary"> Main page</a>
   </div>
 </div>
-<%@ include file="/footer.jsp" %>
+<%@ include file="/users/footer.jsp" %>
 
 

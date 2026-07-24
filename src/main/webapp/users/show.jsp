@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<%@ include file="/header.jsp" %>
+<%@ include file="/users/header.jsp" %>
 <div class="container-fluid">
 
   <!-- Page Heading -->
@@ -30,6 +30,6 @@
     </div>
   </div>
 </div>
-<%@ include file="/footer.jsp" %>
+<%@ include file="/users/footer.jsp" %>
 
 

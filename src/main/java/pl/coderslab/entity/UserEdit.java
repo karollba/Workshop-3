@@ -30,11 +30,11 @@ public class UserEdit extends HttpServlet {
         String password = req.getParameter("userPassword");
 
         try {
-                UserDao.updateUser(id, username, email);
+            UserDao.updateUser(id, username, email);
 
-                if (password != null && !password.isEmpty()) {
-                    UserDao.updatePassword(id, password);
-                }
+            if (password != null && !password.isEmpty()) {
+                UserDao.updatePassword(id, password);
+            }
           } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -42,5 +42,4 @@ public class UserEdit extends HttpServlet {
         resp.sendRedirect(req.getContextPath() + "/user/list");
 
     }
-
 }
